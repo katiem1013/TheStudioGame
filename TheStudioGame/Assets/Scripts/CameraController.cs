@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class CameraController : MonoBehaviour
     public Transform playerObj;
     public Rigidbody rb;
     public Cinemachine.CinemachineFreeLook thirdPersonCam;
+    public Transform zoomedCameraPos;
+    public Transform zoomedLookPos;
 
     public float rotationSpeed;
 
@@ -26,7 +29,7 @@ public class CameraController : MonoBehaviour
     {
         for (int i = 0; i < playerHolder.transform.childCount; i++)
         {
-            if (playerHolder.transform.gameObject.activeSelf == true)
+            if (playerHolder.transform.gameObject.activeSelf == true && Input.GetMouseButtonUp(1))
             {
                 player = playerHolder.transform.transform;
                 rb = player.GetComponent<Rigidbody>();
@@ -34,7 +37,19 @@ public class CameraController : MonoBehaviour
                 orientation = player.transform.GetChild(0).transform;
                 thirdPersonCam.LookAt = player;
                 thirdPersonCam.Follow = player;
+                print(thirdPersonCam.GetRig(0).GetCinemachineComponent<CinemachineComposer>().m_ScreenY);
             }
+        }
+
+        //zoom in mode (still work in progress)
+        if (Input.GetMouseButtonDown(1))
+        {
+            print("working");
+            thirdPersonCam.transform.position = zoomedCameraPos.position;
+            //thirdPersonCam.LookAt = zoomedLookPos;
+            //thirdPersonCam.Follow = zoomedLookPos;
+            thirdPersonCam.LookAt = player;
+            thirdPersonCam.Follow = player;
         }
 
 
